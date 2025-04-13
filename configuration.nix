@@ -9,6 +9,7 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./home-manager.nix
     ];
 
   # Bootloader.
@@ -86,6 +87,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    # desktop tools
+    bitwarden-desktop
+    signal-desktop
     # cli tools
     gh
     git
