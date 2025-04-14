@@ -95,6 +95,7 @@
     wget
     docker-compose
     git
+    glow
     nixpkgs-fmt
     ((vim_configurable.override { }).customize {
       name = "vim";
