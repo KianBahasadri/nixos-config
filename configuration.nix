@@ -89,6 +89,7 @@
   # $ nix search wget
   # packages
   environment.systemPackages = with pkgs; [
+    # cli tools
     tree
     btop
     rclone
@@ -115,6 +116,10 @@
         " ...
       '';
     })
+    # desktop applications
+    signal-desktop
+    bitwarden-desktop
+    gnome-disk-utility
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
