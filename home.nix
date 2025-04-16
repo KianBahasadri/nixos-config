@@ -10,7 +10,9 @@
   programs.bash.enable = true;
   programs.bash.shellAliases = {
     l="ls";
-    ll="ls -l";
+    ll="ls -la";
+    sys-upgrade="sudo nixos-rebuild switch --upgrade --flake $HOME/nixos-config";
+    home-upgrade="home-manager switch --flake $HOME/nixos-config";
   };
 
   programs.git.enable = true;
