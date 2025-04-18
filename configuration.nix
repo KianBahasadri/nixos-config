@@ -119,7 +119,17 @@
     # desktop applications
     signal-desktop
     bitwarden-desktop
+    thunderbird
     gnome-disk-utility
+    megasync
+    cryptomator
+    mpv
+    vlc
+    libreoffice
+    shotcut
+    nautilus
+    qdirstat
+    evolution
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
