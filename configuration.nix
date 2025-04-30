@@ -19,10 +19,6 @@
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Enable networking
   networking.networkmanager.enable = true;
 
@@ -40,6 +36,9 @@
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
+  # sway
+  programs.sway.enable = true;
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -47,7 +46,7 @@
   };
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  # services.printing.enable = true;
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
@@ -63,6 +62,12 @@
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     #media-session.enable = true;
+  };
+  
+  # Nix store management
+  nix.gc = {
+    automatic = true;
+    options = "--delete-older-than 7d";
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -98,6 +103,10 @@
     git
     glow
     nixpkgs-fmt
+    yt-dlp
+    ffmpeg
+    dig
+    whois
     ((vim_configurable.override { }).customize {
       name = "vim";
       # Install plugins for example for syntax highlighting of nix files
@@ -121,15 +130,26 @@
     bitwarden-desktop
     thunderbird
     gnome-disk-utility
-    megasync
-    cryptomator
     mpv
     vlc
     libreoffice
     shotcut
     nautilus
     qdirstat
-    evolution
+    alacritty
+    kitty
+    xclip
+    gimp
+    brave
+    (python312.withPackages (ps: with ps; [
+      numpy # these two are
+      scipy # probably redundant to pandas
+      jupyterlab
+      notebook
+      pandas
+      statsmodels
+      scikitlearn
+    ]))
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
