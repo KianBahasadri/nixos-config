@@ -4,6 +4,9 @@
 
 { config, pkgs, ... }:
 
+let
+  remote_desktop = true;
+in
 {
   imports =
     [
@@ -17,7 +20,6 @@
   boot.loader.grub.useOSProber = true;
 
   networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -31,7 +33,6 @@
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
-
 
   # greeter
   services.greetd = {
@@ -80,7 +81,7 @@
   # Nix store management
   nix.gc = {
     automatic = true;
-    options = "--delete-older-than 7d";
+    options = "--delete-older-than 21d";
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -90,11 +91,7 @@
   users.users.kian = {
     isNormalUser = true;
     description = "kian";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      kdePackages.kate
-      #  thunderbird
-    ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
   };
 
   # Install firefox.
@@ -116,7 +113,10 @@
     git
     glow
     nixpkgs-fmt
+    nmap
+    lsof
     yt-dlp
+    ssh-audit
     unzip
     ffmpeg
     dig
@@ -145,6 +145,7 @@
     thunderbird
     gnome-disk-utility
     mpv
+    moonlight-qt
     vlc
     libreoffice
     shotcut
@@ -167,24 +168,25 @@
     ]))
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh = {
+    enable = remote_desktop;
+    settings = {
+      PasswordAuthentication = false;
+    };
+  };
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [];
+    allowedUDPPorts = [];
+  };
+
+  services.sunshine = {
+    enable = remote_desktop;
+    autoStart = remote_desktop;
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
