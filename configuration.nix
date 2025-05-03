@@ -32,12 +32,25 @@
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
+
+  # greeter
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
+        user = "greeter";
+      };
+    };
+  };
+
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
+  #services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
   # sway
   programs.sway.enable = true;
+  programs.waybar.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -104,6 +117,7 @@
     glow
     nixpkgs-fmt
     yt-dlp
+    unzip
     ffmpeg
     dig
     whois
@@ -139,6 +153,7 @@
     alacritty
     kitty
     xclip
+    wl-clipboard
     gimp
     brave
     (python312.withPackages (ps: with ps; [
