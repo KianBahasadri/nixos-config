@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   modifier = config.wayland.windowManager.sway.config.modifier;
@@ -21,11 +21,10 @@ in
       output = {
         "Virtual-1".resolution = "1920x1080";
       };
-      #keybindings = {
-      #  "${modifier}+return" = "$term";
-      #  "${modifier}+ctrl+right" = "workspace next";
-      #  "${modifier}+ctrl+left" = "workspace prev";
-      #};
+      keybindings = lib.mkOptionDefault {
+        "${modifier}+ctrl+right" = "workspace next";
+        "${modifier}+ctrl+left" = "workspace prev";
+      };
       window = {
         titlebar = false;
       };
@@ -40,7 +39,7 @@ in
     enable = true;
     settings = {
       font = {
-        size = 14;
+        size = 12;
       };
     };
   };
