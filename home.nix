@@ -22,7 +22,7 @@ in
       keybindings = lib.mkOptionDefault {
         "${modifier}+ctrl+right" = "workspace next";
         "${modifier}+ctrl+left" = "workspace prev";
-        "${modifier}+shift+e" = "swaymsg exit";
+        "${modifier}+Shift+e" = "exec swaymsg exit";
         "print" = "grim $(slurp)";
       };
       keycodebindings = {
@@ -68,7 +68,7 @@ in
       keybindings = lib.mkOptionDefault {
         "${modifier}+ctrl+right" = "workspace next";
         "${modifier}+ctrl+left" = "workspace prev";
-        #"${modifier}+shift+e" = "i3-msg exit";
+        "${modifier}+Shift+e" = "exec i3-msg exit";
       };
 
     };
