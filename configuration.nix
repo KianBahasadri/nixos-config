@@ -34,7 +34,8 @@ in
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
 
-  # greeter
+  # greeters
+  #services.displayManager.sddm.enable = true;
   services.greetd = {
     enable = true;
     settings = {
@@ -45,13 +46,13 @@ in
     };
   };
 
-  # Enable the KDE Plasma Desktop Environment.
-  #services.displayManager.sddm.enable = true;
+  # DEs and WMs
   services.desktopManager.plasma6.enable = true;
-
-  # sway
   programs.sway.enable = true;
-  programs.waybar.enable = true;
+  services.xserver = {
+    displayManager.startx.enable = true;
+    windowManager.i3.enable = true;
+  };
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -118,6 +119,7 @@ in
     yt-dlp
     ssh-audit
     unzip
+    imagemagick
     ffmpeg
     dig
     whois
@@ -147,6 +149,10 @@ in
     mpv
     moonlight-qt
     vlc
+    feh
+    swaybg
+    grim
+    slurp
     libreoffice
     shotcut
     nautilus

@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  modifier = config.wayland.windowManager.sway.config.modifier;
+  modifier = "Mod4"; # this sets the mod key to Super
 in
 {
   # boiler-plate
@@ -11,26 +11,66 @@ in
   programs.home-manager.enable = true;
 
   # Sway
-  programs.waybar.enable = true;
   wayland.windowManager.sway = {
     enable = true;
     config = {
-      modifier = "Mod4"; # this sets the mod key to Super
+      modifier = "${modifier}";
       terminal = "alacritty";
-      bars = [];
       output = {
         "Virtual-1".resolution = "1920x1080";
       };
       keybindings = lib.mkOptionDefault {
         "${modifier}+ctrl+right" = "workspace next";
         "${modifier}+ctrl+left" = "workspace prev";
+        "${modifier}+shift+e" = "swaymsg exit";
+        "print" = "grim $(slurp)";
+      };
+      keycodebindings = {
+        # Logitech MX Master 3
+        "--whole-window 275" = "workspace prev";
+        "--whole-window 276" = "workspace next";
       };
       window = {
         titlebar = false;
       };
       startup = [
-        { command = "mpv $HOME/nixos-config/assets/windows_vista_startup.mp3"; }
+        {
+          command = "mpv $HOME/nixos-config/assets/windows_vista_startup.mp3";
+        }
+        {
+          command = "swaybg --image $HOME/nixos-config/assets/sway_wallpaper.jpg";
+        }
       ];
+    };
+  };
+  xsession.windowManager.i3 = {
+    enable = true;
+    config = {
+      modifier = "Mod4";
+      terminal = "alacritty";
+      startup = [
+        {
+          command = "xrandr --output Virtual-1 --mode 1920x1080";
+          always = true;
+        }
+        {
+          command = "mpv $HOME/nixos-config/assets/windows_vista_startup.mp3";
+          always = true;
+        }
+        {
+          command = "feh --bg-scale $HOME/nixos-config/assets/i3_wallpaper.jpg";
+          always = true;
+        }
+      ];
+      window = {
+        titlebar = false;
+      };
+      keybindings = lib.mkOptionDefault {
+        "${modifier}+ctrl+right" = "workspace next";
+        "${modifier}+ctrl+left" = "workspace prev";
+        #"${modifier}+shift+e" = "i3-msg exit";
+      };
+
     };
   };
 
@@ -44,19 +84,32 @@ in
     };
   };
 
-  programs.bash.enable = true;
-  programs.bash.shellAliases = {
-    l="ls";
-    ll="ls -la";
-    sys-upgrade="sudo nixos-rebuild switch --upgrade --flake $HOME/nixos-config";
-    home-upgrade="home-manager switch --flake $HOME/nixos-config";
-    copy="wl-copy";
-    paste="wl-paste";
+  programs.bash = {
+    enable = true;
+    shellAliases = {
+      l = "ls";
+      ll = "ls -la";
+      sys-upgrade = "sudo nixos-rebuild switch --upgrade --flake $HOME/nixos-config";
+      home-upgrade = "home-manager switch --flake $HOME/nixos-config";
+      copy = "wl-copy";
+      paste = "wl-paste";
+    };
+    initExtra = "
+    if [[ $XDG_SESSION_TYPE == Wayland ]] then
+      alias copy='wl-copy'
+      alias paste='wl-paste'
+    elif [[ $XDG_SESSION_TYPE == x11 ]] then
+      alias copy='xclip -selection clipboard'
+      alias paste='xclip -out -selection clipboard'
+    fi
+    ";
   };
 
-  programs.git.enable = true;
-  programs.git.userName = "KianBahasadri";
-  programs.git.userEmail = "101868619+KianBahasadri@users.noreply.github.com";
+  programs.git = {
+    enable = true;
+    userName = "KianBahasadri";
+    userEmail = "101868619+KianBahasadri@users.noreply.github.com";
+  };
   programs.gh.enable = true;
 
   # fonts
