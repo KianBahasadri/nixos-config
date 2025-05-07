@@ -66,8 +66,9 @@ in
         titlebar = false;
       };
       keybindings = lib.mkOptionDefault {
-        "${modifier}+ctrl+right" = "workspace next";
-        "${modifier}+ctrl+left" = "exec i3-msg workspace prev";
+        # the sway syntax doesnt fucking work for i3, >:(
+        "${modifier}+Control+Right" = "workspace next";
+        "${modifier}+Control+Left" = "workspace prev";
         "${modifier}+Shift+e" = "exec i3-msg exit";
         "print" = "exec screenshot";
       };
