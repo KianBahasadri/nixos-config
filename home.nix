@@ -23,7 +23,7 @@ in
         "${modifier}+ctrl+right" = "workspace next";
         "${modifier}+ctrl+left" = "workspace prev";
         "${modifier}+Shift+e" = "exec swaymsg exit";
-        "print" = "grim $(slurp)";
+        "print" = "exec screenshot";
       };
       keycodebindings = {
         # Logitech MX Master 3
@@ -67,8 +67,9 @@ in
       };
       keybindings = lib.mkOptionDefault {
         "${modifier}+ctrl+right" = "workspace next";
-        "${modifier}+ctrl+left" = "workspace prev";
+        "${modifier}+ctrl+left" = "exec i3-msg workspace prev";
         "${modifier}+Shift+e" = "exec i3-msg exit";
+        "print" = "exec screenshot";
       };
 
     };
@@ -91,16 +92,16 @@ in
       ll = "ls -la";
       sys-upgrade = "sudo nixos-rebuild switch --upgrade --flake $HOME/nixos-config";
       home-upgrade = "home-manager switch --flake $HOME/nixos-config";
-      copy = "wl-copy";
-      paste = "wl-paste";
     };
     initExtra = "
     if [[ $XDG_SESSION_TYPE == Wayland ]] then
       alias copy='wl-copy'
       alias paste='wl-paste'
+      alias take_screenshot='grim'
     elif [[ $XDG_SESSION_TYPE == x11 ]] then
       alias copy='xclip -selection clipboard'
       alias paste='xclip -out -selection clipboard'
+      alias take_screenshot='import'
     fi
     ";
   };

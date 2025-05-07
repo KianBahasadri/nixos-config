@@ -40,11 +40,28 @@ in
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --remember-session --theme 'Aardvark Blue' --cmd i3";
         user = "greeter";
       };
     };
   };
+
+  # https://github.com/sjcobb2022/nixos-config/blob/main/hosts/common/optional/greetd.nix
+  # this is a life saver.
+  # literally no documentation about this anywhere.
+  # might be good to write about this...
+  # https://www.reddit.com/r/NixOS/comments/u0cdpi/tuigreet_with_xmonad_how/
+  systemd.services.greetd.serviceConfig = {
+    Type = "idle";
+    StandardInput = "tty";
+    StandardOutput = "tty";
+    StandardError = "journal"; # Without this errors will spam on screen
+    # Without these bootlogs will spam on screen
+    TTYReset = true;
+    TTYVHangup = true;
+    TTYVTDisallocate = true;
+  };
+
 
   # DEs and WMs
   services.desktopManager.plasma6.enable = true;
@@ -78,7 +95,7 @@ in
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
-  
+
   # Nix store management
   nix.gc = {
     automatic = true;
@@ -117,6 +134,7 @@ in
     nmap
     lsof
     yt-dlp
+    nix-search-cli
     ssh-audit
     unzip
     imagemagick
@@ -152,10 +170,13 @@ in
     feh
     swaybg
     grim
+    eog
+    imv
     slurp
     libreoffice
     shotcut
     nautilus
+    xfce.thunar
     qdirstat
     alacritty
     kitty
@@ -185,8 +206,8 @@ in
   # Open ports in the firewall.
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [];
-    allowedUDPPorts = [];
+    allowedTCPPorts = [ ];
+    allowedUDPPorts = [ ];
   };
 
   services.sunshine = {
