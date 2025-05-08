@@ -68,7 +68,9 @@ in
   programs.sway.enable = true;
   services.xserver = {
     displayManager.startx.enable = true;
-    windowManager.i3.enable = true;
+    windowManager.i3 = {
+      enable = true;
+    };
   };
 
   # Configure keymap in X11
@@ -176,7 +178,6 @@ in
     libreoffice
     shotcut
     nautilus
-    xfce.thunar
     qdirstat
     alacritty
     kitty

@@ -16,6 +16,7 @@ in
     config = {
       modifier = "${modifier}";
       terminal = "alacritty";
+      defaultWorkspace = "workspace number 1";
       output = {
         "Virtual-1".resolution = "1920x1080";
       };
@@ -23,7 +24,7 @@ in
         "${modifier}+ctrl+right" = "workspace next";
         "${modifier}+ctrl+left" = "workspace prev";
         "${modifier}+Shift+e" = "exec swaymsg exit";
-        "print" = "exec screenshot";
+        "print" = "exec grim";
       };
       keycodebindings = {
         # Logitech MX Master 3
@@ -43,11 +44,13 @@ in
       ];
     };
   };
+  # i3
   xsession.windowManager.i3 = {
     enable = true;
     config = {
       modifier = "Mod4";
       terminal = "alacritty";
+      defaultWorkspace = "workspace number 1";
       startup = [
         {
           command = "xrandr --output Virtual-1 --mode 1920x1080";
@@ -70,9 +73,8 @@ in
         "${modifier}+Control+Right" = "workspace next";
         "${modifier}+Control+Left" = "workspace prev";
         "${modifier}+Shift+e" = "exec i3-msg exit";
-        "print" = "exec screenshot";
+        "Print" = ''exec import "$HOME/Screenshots/Screenshot_$(date).png"'';
       };
-
     };
   };
 
@@ -94,17 +96,15 @@ in
       sys-upgrade = "sudo nixos-rebuild switch --upgrade --flake $HOME/nixos-config";
       home-upgrade = "home-manager switch --flake $HOME/nixos-config";
     };
-    initExtra = "
+    initExtra = ''
     if [[ $XDG_SESSION_TYPE == Wayland ]] then
       alias copy='wl-copy'
       alias paste='wl-paste'
-      alias take_screenshot='grim'
     elif [[ $XDG_SESSION_TYPE == x11 ]] then
       alias copy='xclip -selection clipboard'
       alias paste='xclip -out -selection clipboard'
-      alias take_screenshot='import'
     fi
-    ";
+    '';
   };
 
   programs.git = {
