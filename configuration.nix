@@ -8,11 +8,10 @@ let
   remote_desktop = true;
 in
 {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.grub.enable = true;
@@ -62,9 +61,8 @@ in
     TTYVTDisallocate = true;
   };
 
-
   # DEs and WMs
-  services.desktopManager.plasma6.enable = true;
+  #services.desktopManager.plasma6.enable = true;
   programs.sway.enable = true;
   services.xserver = {
     displayManager.startx.enable = true;
@@ -111,7 +109,11 @@ in
   users.users.kian = {
     isNormalUser = true;
     description = "kian";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+    ];
   };
 
   # Install firefox.
@@ -130,14 +132,21 @@ in
     rclone
     wget
     docker-compose
+    usbutils
+    ranger
     git
     glow
+    fdupes
+    exiftool
     nixpkgs-fmt
+    nixfmt-rfc-style
     nmap
     lsof
     yt-dlp
     nix-search-cli
     ssh-audit
+    gnome-text-editor
+    gedit
     unzip
     imagemagick
     ffmpeg
@@ -147,7 +156,10 @@ in
       name = "vim";
       # Install plugins for example for syntax highlighting of nix files
       vimrcConfig.packages.myplugins = with pkgs.vimPlugins; {
-        start = [ vim-nix vim-lastplace ];
+        start = [
+          vim-nix
+          vim-lastplace
+        ];
         opt = [ ];
       };
       vimrcConfig.customRC = ''
@@ -185,16 +197,23 @@ in
     wl-clipboard
     gimp
     brave
-    (python312.withPackages (ps: with ps; [
-      numpy # these two are
-      scipy # probably redundant to pandas
-      jupyterlab
-      notebook
-      pandas
-      statsmodels
-      scikitlearn
-    ]))
+    (python312.withPackages (
+      ps: with ps; [
+        numpy # these two are
+        scipy # probably redundant to pandas
+        jupyterlab
+        notebook
+        pandas
+        statsmodels
+        scikitlearn
+      ]
+    ))
   ];
+
+  services.tumbler.enable = true;
+  programs.thunar.enable = true;
+
+  virtualisation.docker.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh = {
@@ -224,5 +243,8 @@ in
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 }

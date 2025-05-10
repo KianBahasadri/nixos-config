@@ -1,5 +1,9 @@
-{ config, pkgs, lib, ... }:
-
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   modifier = "Mod4"; # this sets the mod key to Super
 in
@@ -49,7 +53,7 @@ in
     enable = true;
     config = {
       modifier = "Mod4";
-      terminal = "alacritty";
+      terminal = "kitty";
       defaultWorkspace = "workspace number 1";
       startup = [
         {
@@ -64,6 +68,10 @@ in
           command = "feh --bg-scale $HOME/nixos-config/assets/i3_wallpaper.jpg";
           always = true;
         }
+        {
+          command = "thunderbird";
+          always = true;
+        }
       ];
       window = {
         titlebar = false;
@@ -76,6 +84,26 @@ in
         "Print" = ''exec import "$HOME/Screenshots/Screenshot_$(date).png"'';
       };
     };
+  };
+
+  gtk = {
+    enable = true;
+    theme.package = pkgs.arc-theme;
+    theme.name = "Arc-Dark";
+
+    iconTheme.package = pkgs.arc-icon-theme;
+    iconTheme.name = "Arc";
+    gtk3.bookmarks = [ 
+      "file://home/kian/documents"
+      "file://home/kian/personal_media"
+      "file://home/kian/memes"
+    ];
+  };
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 24;
+    gtk.enable = true;
   };
 
   # Terminal
@@ -97,13 +125,13 @@ in
       home-upgrade = "home-manager switch --flake $HOME/nixos-config";
     };
     initExtra = ''
-    if [[ $XDG_SESSION_TYPE == Wayland ]] then
-      alias copy='wl-copy'
-      alias paste='wl-paste'
-    elif [[ $XDG_SESSION_TYPE == x11 ]] then
-      alias copy='xclip -selection clipboard'
-      alias paste='xclip -out -selection clipboard'
-    fi
+      if [[ $XDG_SESSION_TYPE == Wayland ]] then
+        alias copy='wl-copy'
+        alias paste='wl-paste'
+      elif [[ $XDG_SESSION_TYPE == x11 ]] then
+        alias copy='xclip -selection clipboard'
+        alias paste='xclip -out -selection clipboard'
+      fi
     '';
   };
 
