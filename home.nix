@@ -86,6 +86,24 @@ in
     };
   };
 
+  xdg = {
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "image/jpeg" = [ "imv.desktop" ];
+        "image/png" = [ "imv.desktop" ];
+        "image/gif" = [ "org.gnome.eog.desktop" ]; # replace this with gthumb
+        "x-scheme-handler/http" = [ "firefox.desktop" ];
+        "x-scheme-handler/https" = [ "firefox.desktop" ];
+        "application/zip" = [ "vim.desktop" ];
+        "text/plain" = [ "vim.desktop" ];
+        "image/webp" = [ "org.gnome.eog.desktop" ];# replace this with gthumb
+        "application/pdf" = [ "org.pwmt.zathura.desktop" ];
+      };
+    };
+    configFile."mimeapps.list".force = true;
+  };
+
   gtk = {
     enable = true;
     theme.package = pkgs.arc-theme;
@@ -94,11 +112,18 @@ in
     iconTheme.package = pkgs.arc-icon-theme;
     iconTheme.name = "Arc";
     gtk3.bookmarks = [ 
-      "file://home/kian/documents"
-      "file://home/kian/personal_media"
-      "file://home/kian/memes"
+      "file:///home/kian/documents"
+      "file:///home/kian/personal_media"
+      "file:///home/kian/memes"
+      "file:///home/kian/temp"
+      "file:///home/kian/Screenshots"
     ];
   };
+
+  home.sessionVariables = {
+    TERM = "kitty";
+  };
+
   home.pointerCursor = {
     name = "Adwaita";
     package = pkgs.adwaita-icon-theme;
@@ -121,8 +146,9 @@ in
     shellAliases = {
       l = "ls";
       ll = "ls -la";
-      sys-upgrade = "sudo nixos-rebuild switch --upgrade --flake $HOME/nixos-config";
+      sys-rebuild = "sudo nixos-rebuild switch --flake $HOME/nixos-config";
       home-upgrade = "home-manager switch --flake $HOME/nixos-config";
+      openports = "sudo lsof -iTCP -sTCP:LISTEN";
     };
     initExtra = ''
       if [[ $XDG_SESSION_TYPE == Wayland ]] then

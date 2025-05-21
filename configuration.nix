@@ -5,7 +5,7 @@
 { config, pkgs, ... }:
 
 let
-  remote_desktop = true;
+  remote_desktop = false;
 in
 {
   imports = [
@@ -71,6 +71,12 @@ in
     };
   };
 
+  environment.sessionVariables = {
+  TERMINAL = "kitty";
+  TERM = "kitty";
+  EDITOR = "vim";
+};
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -100,6 +106,7 @@ in
   nix.gc = {
     automatic = true;
     options = "--delete-older-than 21d";
+    dates = "weekly";
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -113,7 +120,11 @@ in
       "networkmanager"
       "wheel"
       "docker"
+      "libvirt"
     ];
+  };
+  users.groups.libvirt= {
+    name = "libvirt";
   };
 
   # Install firefox.
@@ -130,19 +141,25 @@ in
     tree
     btop
     rclone
+    age
+    age-plugin-yubikey
+    yubikey-manager
     wget
     docker-compose
     usbutils
+    nixos-anywhere
     ranger
     git
     glow
     fdupes
+    speedtest-cli
     exiftool
-    nixpkgs-fmt
     nixfmt-rfc-style
+    sops
     nmap
     lsof
     yt-dlp
+    lolcat
     nix-search-cli
     ssh-audit
     gnome-text-editor
@@ -185,9 +202,11 @@ in
     swaybg
     grim
     eog
+    gthumb
     imv
     slurp
     libreoffice
+    zathura
     shotcut
     nautilus
     qdirstat
@@ -195,7 +214,7 @@ in
     kitty
     xclip
     wl-clipboard
-    gimp
+    gimp3
     brave
     (python312.withPackages (
       ps: with ps; [
@@ -212,8 +231,15 @@ in
 
   services.tumbler.enable = true;
   programs.thunar.enable = true;
+  programs.virt-manager.enable = true;
+
+  virtualisation.libvirtd.enable = true;
 
   virtualisation.docker.enable = true;
+
+  services.pcscd.enable = true;
+
+  services.tailscale.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh = {
