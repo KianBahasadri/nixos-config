@@ -147,7 +147,7 @@ in
       l = "ls";
       ll = "ls -la";
       sys-rebuild = "sudo nixos-rebuild switch --flake $HOME/nixos-config";
-      home-upgrade = "home-manager switch --flake $HOME/nixos-config";
+      home-rebuild = "home-manager switch --flake $HOME/nixos-config";
       openports = "sudo lsof -iTCP -sTCP:LISTEN";
     };
     initExtra = ''
@@ -158,6 +158,16 @@ in
         alias copy='xclip -selection clipboard'
         alias paste='xclip -out -selection clipboard'
       fi
+
+      play_random_ad() {
+        if (( RANDOM % 100 == 0 )); then
+          ad_dir=~/advertisements
+          ad_file=$(find "$ad_dir" -type f | shuf -n 1)
+          mpv "$ad_file" --vo=kitty --osc=no --no-input-default-bindings \
+              --osd-msg1="Your command will run after this short advertisement"
+        fi
+      }
+      trap play_random_ad DEBUG
     '';
   };
 
@@ -176,9 +186,10 @@ in
     font-awesome
     liberation_ttf
     mplus-outline-fonts.githubRelease
-    nerdfonts
     noto-fonts
     noto-fonts-emoji
     proggyfonts
+
+    #nerdfonts
   ];
 }
