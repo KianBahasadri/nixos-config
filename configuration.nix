@@ -214,6 +214,8 @@ in
     shotcut
     nautilus
     mullvad-browser
+    code-cursor
+    vscodium
     peek
     obs-studio
     qdirstat
