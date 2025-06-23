@@ -82,8 +82,8 @@ in
         }
       ];
       assigns = {
-        "2" = [{ class = "^firefox$"; }];
-        "3" = [{ class = "^Signal$"; }];
+        "2" = [ { class = "^firefox$"; } ];
+        "3" = [ { class = "^signal$"; } ];
       };
       window = {
         titlebar = false;
@@ -109,7 +109,7 @@ in
         "x-scheme-handler/https" = [ "firefox.desktop" ];
         "application/zip" = [ "vim.desktop" ];
         "text/plain" = [ "vim.desktop" ];
-        "image/webp" = [ "org.gnome.eog.desktop" ];# replace this with gthumb
+        "image/webp" = [ "org.gnome.eog.desktop" ]; # replace this with gthumb
         "application/pdf" = [ "org.pwmt.zathura.desktop" ];
       };
     };
@@ -123,7 +123,7 @@ in
 
     iconTheme.package = pkgs.arc-icon-theme;
     iconTheme.name = "Arc";
-    gtk3.bookmarks = [ 
+    gtk3.bookmarks = [
       "file:///home/kian/documents"
       "file:///home/kian/personal_media"
       "file:///home/kian/memes"
