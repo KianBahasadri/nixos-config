@@ -75,8 +75,6 @@ in
   };
 
   environment.sessionVariables = {
-  TERMINAL = "kitty";
-  TERM = "kitty";
   EDITOR = "vim";
 };
 
@@ -109,7 +107,7 @@ in
   nix.gc = {
     automatic = true;
     options = "--delete-older-than 21d";
-    dates = "weekly";
+    dates = "daily";
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -143,31 +141,48 @@ in
     # cli tools
     tree
     btop
+    fastfetch
     rclone
-    age
-    age-plugin-yubikey
-    yubikey-manager
     wget
-    docker-compose
     usbutils
-    nixos-anywhere
     zip
     ranger
-    git
     glow
     fdupes
     speedtest-cli
     exiftool
-    nixfmt-rfc-style
+    jq
+    file
+    
+    # secrets
+    age
+    age-plugin-yubikey
+    yubikey-manager
     sops
+
+    # devtools
+    docker-compose
+    openssl
+    git
+
+    # nix
+    nixos-anywhere
+    nixos-generators
+    nixfmt-rfc-style
+    vulnix
+
+    # rust compilation 
+    cargo
+    rustc
+    gcc
+    pkg-config
+
     nmap
     lsof
     yt-dlp
     lolcat
     nix-search-cli
     ssh-audit
-    gnome-text-editor
-    gedit
     unzip
     imagemagick
     ffmpeg
@@ -203,6 +218,8 @@ in
     moonlight-qt
     vlc
     feh
+    gnome-text-editor
+    gedit
     swaybg
     grim
     eog
@@ -219,6 +236,7 @@ in
     peek
     obs-studio
     qdirstat
+    flameshot
     alacritty
     kitty
     xclip
@@ -242,6 +260,8 @@ in
   programs.thunar.enable = true;
   programs.virt-manager.enable = true;
 
+  programs.gnupg.agent.enable = true;
+  programs.ssh.startAgent = true;
   virtualisation.libvirtd.enable = true;
 
   virtualisation.docker.enable = true;

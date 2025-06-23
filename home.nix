@@ -72,7 +72,19 @@ in
           command = "thunderbird";
           always = true;
         }
+        {
+          command = "firefox";
+          always = true;
+        }
+        {
+          command = "signal-desktop";
+          always = true;
+        }
       ];
+      assigns = {
+        "2" = [{ class = "^firefox$"; }];
+        "3" = [{ class = "^Signal$"; }];
+      };
       window = {
         titlebar = false;
       };
@@ -121,7 +133,10 @@ in
   };
 
   home.sessionVariables = {
-    TERM = "kitty";
+    TERM = "ansi";
+  };
+  programs.kitty.environment = {
+    "TERM" = "ansi";
   };
 
   home.pointerCursor = {
@@ -160,7 +175,7 @@ in
       fi
 
       play_random_ad() {
-        if (( RANDOM % 100 == 0 )); then
+        if (( RANDOM % 125 == 0 )); then
           ad_dir=~/advertisements
           ad_file=$(find "$ad_dir" -type f | shuf -n 1)
           mpv "$ad_file" --vo=kitty --osc=no --no-input-default-bindings \
