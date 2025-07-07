@@ -215,6 +215,8 @@ in
     thunderbird
     gnome-disk-utility
     mpv
+    remmina
+    rustdesk-flutter
     moonlight-qt
     vlc
     feh

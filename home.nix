@@ -12,7 +12,7 @@ in
   home.username = "kian";
   home.homeDirectory = "/home/kian";
   home.stateVersion = "24.11";
-  programs.home-manager.enable = true;
+  programs.home-manager.enable = false;
 
   # Sway
   wayland.windowManager.sway = {
@@ -83,7 +83,7 @@ in
       ];
       assigns = {
         "2" = [ { class = "^firefox$"; } ];
-        "3" = [ { class = "^signal$"; } ];
+        "6" = [ { class = "^Signal$"; } ];
       };
       window = {
         titlebar = false;
@@ -178,7 +178,7 @@ in
         if (( RANDOM % 125 == 0 )); then
           ad_dir=~/advertisements
           ad_file=$(find "$ad_dir" -type f | shuf -n 1)
-          mpv "$ad_file" --vo=kitty --osc=no --no-input-default-bindings \
+          mpv "$ad_file" --vo=tct --osc=no --no-input-default-bindings \
               --osd-msg1="Your command will run after this short advertisement"
         fi
       }
