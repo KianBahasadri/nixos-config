@@ -14,9 +14,8 @@ in
   ];
 
   # Bootloader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/vda";
-  boot.loader.grub.useOSProber = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixos"; # Define your hostname.
 
@@ -33,7 +32,6 @@ in
   # You can disable this if you're only using the Wayland session.
   services.xserver = {
     enable = true;
-    videoDrivers = [ "qxl" ];
   };
 
   # greeters
@@ -127,9 +125,31 @@ in
   users.groups.libvirt= {
     name = "libvirt";
   };
+  
+  services.tlp = {
+      enable = true;
+      settings = {
+        CPU_SCALING_GOVERNOR_ON_AC = "performance";
+        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+
+        CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+        CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+
+        CPU_MIN_PERF_ON_AC = 0;
+        CPU_MAX_PERF_ON_AC = 100;
+        CPU_MIN_PERF_ON_BAT = 0;
+        CPU_MAX_PERF_ON_BAT = 20;
+
+       START_CHARGE_THRESH_BAT0 = 40; # 40 and below it starts to charge
+       STOP_CHARGE_THRESH_BAT0 = 50; # 80 and above it stops charging
+
+      };
+  };
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
   # Install firefox.
-  programs.firefox.enable = true;
+  # programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -170,6 +190,7 @@ in
     nixos-generators
     nixfmt-rfc-style
     vulnix
+    home-manager
 
     # rust compilation 
     cargo
@@ -216,18 +237,20 @@ in
     gnome-disk-utility
     mpv
     remmina
-    rustdesk-flutter
+    playerctl
     moonlight-qt
     vlc
     feh
     gnome-text-editor
     gedit
+    telegram-desktop
     swaybg
     grim
     eog
     gthumb
     imv
     slurp
+    spotify
     libreoffice
     zathura
     shotcut
@@ -235,6 +258,7 @@ in
     mullvad-browser
     code-cursor
     vscodium
+    vscode
     peek
     obs-studio
     qdirstat
