@@ -85,9 +85,14 @@ in
           command = "spotify";
           always = true;
         }
+        {
+          command = "Telegram";
+          always = true;
+        }
       ];
       assigns = {
         "2" = [ { class = "^firefox$"; } ];
+        "5" = [ { class = "TelegramDesktop"; } ];
         "6" = [ { class = "Spotify"; } ];
       };
       window = {
@@ -142,8 +147,11 @@ in
   home.sessionVariables = {
     TERM = "ansi";
   };
-  programs.kitty.environment = {
-    "TERM" = "ansi";
+  programs.kitty = {
+    environment = {
+      "TERM" = "ansi";
+    };
+    extraConfig = "close_on_child_death yes";
   };
 
   home.pointerCursor = {
@@ -159,6 +167,17 @@ in
     settings = {
       font = {
         size = 12;
+      };
+    };
+  };
+
+  programs.i3status = {
+    enable = true;
+    modules = {
+      "tztime local" = {
+        settings = {
+          format = "%I:%M:%S %p";
+        };
       };
     };
   };
@@ -204,13 +223,13 @@ in
     enable = true;
     languagePacks = [ "en-US" ];
 
-    /* ---- POLICIES ---- */
+    # ---- POLICIES ----
     # Check about:policies#documentation for options.
     policies = {
       DisableTelemetry = true;
       DisableFirefoxStudies = true;
       EnableTrackingProtection = {
-        Value= true;
+        Value = true;
         Locked = true;
         Cryptomining = true;
         Fingerprinting = true;
@@ -222,11 +241,12 @@ in
       OverrideFirstRunPage = "";
       OverridePostUpdatePage = "";
       DontCheckDefaultBrowser = true;
-      DisplayBookmarksToolbar = "never"; # alternatives: "always" or "newtab"
+      DisplayBookmarksToolbar = "always"; # "never", "always" or "newtab"
       DisplayMenuBar = "default-off"; # alternatives: "always", "never" or "default-on"
       SearchBar = "unified"; # alternative: "separate"
+      OfferToSaveLogins = false;
 
-      /* ---- EXTENSIONS ---- */
+      # ---- EXTENSIONS ----
       # Check about:support for extension/add-on ID strings.
       # Valid strings for installation_mode are "allowed", "blocked",
       # "force_installed" and "normal_installed".
@@ -250,13 +270,16 @@ in
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
           installation_mode = "force_installed";
         };
- 
+
       };
 
-      /* ---- PREFERENCES ---- */
+      # ---- PREFERENCES ----
       # Check about:config for options.
-      Preferences = { 
-        "browser.contentblocking.category" = { Value = "strict"; Status = "locked"; };
+      Preferences = {
+        "browser.contentblocking.category" = {
+          Value = "strict";
+          Status = "locked";
+        };
         "extensions.pocket.enabled" = lock-false;
         "extensions.screenshots.disabled" = lock-true;
         "browser.topsites.contile.enabled" = lock-false;

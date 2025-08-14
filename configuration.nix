@@ -62,6 +62,14 @@ in
     TTYVTDisallocate = true;
   };
 
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.production; # Latest production driver
+  hardware.nvidia.prime = {
+    # Make sure to use the correct Bus ID values for your system!
+    intelBusId = "PCI:0:2:0";
+    nvidiaBusId = "PCI:14:0:0";
+    # amdgpuBusId = "PCI:54:0:0"; For AMD GPU
+  };
+
   # DEs and WMs
   #services.desktopManager.plasma6.enable = true;
   programs.sway.enable = true;
@@ -73,8 +81,8 @@ in
   };
 
   environment.sessionVariables = {
-  EDITOR = "vim";
-};
+    EDITOR = "vim";
+  };
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -86,7 +94,7 @@ in
   # services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -122,28 +130,28 @@ in
       "libvirt"
     ];
   };
-  users.groups.libvirt= {
+  users.groups.libvirt = {
     name = "libvirt";
   };
-  
+
   services.tlp = {
-      enable = true;
-      settings = {
-        CPU_SCALING_GOVERNOR_ON_AC = "performance";
-        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+    enable = true;
+    settings = {
+      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
-        CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-        CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
 
-        CPU_MIN_PERF_ON_AC = 0;
-        CPU_MAX_PERF_ON_AC = 100;
-        CPU_MIN_PERF_ON_BAT = 0;
-        CPU_MAX_PERF_ON_BAT = 20;
+      CPU_MIN_PERF_ON_AC = 0;
+      CPU_MAX_PERF_ON_AC = 100;
+      CPU_MIN_PERF_ON_BAT = 0;
+      CPU_MAX_PERF_ON_BAT = 20;
 
-       START_CHARGE_THRESH_BAT0 = 40; # 40 and below it starts to charge
-       STOP_CHARGE_THRESH_BAT0 = 50; # 80 and above it stops charging
+      START_CHARGE_THRESH_BAT0 = 40; # 40 and below it starts to charge
+      STOP_CHARGE_THRESH_BAT0 = 50; # 80 and above it stops charging
 
-      };
+    };
   };
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
@@ -162,6 +170,7 @@ in
     tree
     btop
     fastfetch
+    wireguard-tools
     rclone
     wget
     usbutils
@@ -173,7 +182,7 @@ in
     exiftool
     jq
     file
-    
+
     # secrets
     age
     age-plugin-yubikey
@@ -184,6 +193,8 @@ in
     docker-compose
     openssl
     git
+    pnpm
+    nodejs
 
     # nix
     nixos-anywhere
@@ -192,7 +203,7 @@ in
     vulnix
     home-manager
 
-    # rust compilation 
+    # rust compilation
     cargo
     rustc
     gcc
